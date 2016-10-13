@@ -18,34 +18,30 @@ import Model.Cell;
 
 
 
-public class GridView extends JPanel{
+public class GridView extends javax.swing.JPanel {
 
-    private int columnCount;
-    private int rowCount;
+    private int col;
+    private int row;
     private List<Cell> cells;
     private Point selectedCell;
     private GameController controller;
 
-    public GridView(final int rowCount, final int columnCount, GameController controller) {
-    	this.rowCount = rowCount;
-    	this.columnCount = columnCount;
+    public GridView(final int row, final int col, GameController controller) {
+    	this.row = row;
+    	this.col = col;
     	this.controller = controller;
-    	
-        cells = new ArrayList<Cell>(columnCount * rowCount);
+        cells = new ArrayList<Cell>(col * row);
         
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
 
                  	  int width = getWidth();
                       int height = getHeight();
-
-                      int column = columnCount * evt.getX() / width;
-                      int row = rowCount * evt.getY() / height;
-
-                      selectedCell = new Point(column, row);
+                      int i = col * evt.getX() / width;
+                      int j = row * evt.getY() / height;
                       
+                      selectedCell = new Point(i, j);
                       clickCell(selectedCell);
-                      
                       repaint();
                  
             }
@@ -59,14 +55,11 @@ public class GridView extends JPanel{
             public void mousePressed(MouseEvent evt){
             	 int width = getWidth();
                  int height = getHeight();
+                 int i = col * evt.getX() / width;
+                 int j = row * evt.getY() / height;
 
-                 int column = columnCount * evt.getX() / width;
-                 int row = rowCount * evt.getY() / height;
-
-                 selectedCell = new Point(column, row);
-                 
+                 selectedCell = new Point(i, j);
                  clickCell(selectedCell);
-                 
                  repaint();
             }
 
@@ -82,24 +75,22 @@ public class GridView extends JPanel{
    public void mousePressed(MouseEvent evt){
 	   int width = getWidth();
        int height = getHeight();
+       int i = col * evt.getX() / width;
+       int j = row * evt.getY() / height;
 
-       int column = columnCount * evt.getX() / width;
-       int row = rowCount * evt.getY() / height;
-
-       selectedCell = new Point(column, row);
-       
+       selectedCell = new Point(i, j);
        clickCell(selectedCell);
-       
        repaint();
     	
     }
     
     
     private void clickCell(Point selectedCell) {
-		int column = (int) selectedCell.getX();
-		int row = (int) selectedCell.getY();
 		
-		controller.clickedCell(row, column);
+		int i = (int) selectedCell.getY();
+		int j = (int) selectedCell.getX();
+		
+		controller.clickedCell(i, j);
 	}
 
 
@@ -117,13 +108,13 @@ public class GridView extends JPanel{
 
         int width = getWidth();
         int height = getHeight();
-        int cellDim = width / columnCount;
-        int x = (width - (columnCount * cellDim)) / 2;
-        int y = (height - (rowCount * cellDim)) / 2;
+        int cellDim = width / col;
+        int x = (width - (col * cellDim)) / 2;
+        int y = (height - (row * cellDim)) / 2;
 
         if (cells.isEmpty()) {
-            for (int i = 0; i < rowCount; i++) {
-                for (int j = 0; j < columnCount; j++) {
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
                     Cell cell = new Cell(
                             x + (j * cellDim),
                             y + (i * cellDim),
@@ -134,14 +125,12 @@ public class GridView extends JPanel{
             }
         }
 
-        
         for (Cell cell : cells) {
         	if(cell.isAlive()) {
                 g2d.setColor(Color.black);
                 g2d.fill(cell);
         	}
-        }
-        
+        }        
 
         g2d.setColor(Color.red);
         for (Rectangle cell : cells) {

@@ -62,7 +62,7 @@ public class GameView {
 
 	public void GraphicUserInterface() {
 
-		JFrame jframe = new JFrame("Game of Life");
+		javax.swing.JFrame jframe = new javax.swing.JFrame("Game of Life");
 		jframe.setBackground(Color.black);
 		jframe.setSize(600, 600);
 		jframe.setResizable(false);
@@ -70,10 +70,8 @@ public class GameView {
 		jframe.setLocationRelativeTo(null);
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.controls = createButtonsMenu(jframe);
-		//this.grid = createGrid(jframe, controls);
 		grid = new GridView(height, width, controller);
-		grid.setPreferredSize(new Dimension(jframe.getSize().width, 
-								jframe.getSize().height - 50));
+		grid.setPreferredSize(new Dimension(jframe.getSize().width,jframe.getSize().height - 50));
 		grid.setLayout(new GridLayout(height, width));
 		setCells(grid.getCells());
 		jframe.add(controls,  BorderLayout.SOUTH);
@@ -85,7 +83,8 @@ public class GameView {
 	
 	public int dropDownList(){
 		int rule = 0;
-		String[] choices = { "", "Conway", "Maze", "DayNight", "WalledCities", "Gnarl" };
+		String[] choices = { "", "Conway", "Maze", "DayNight", "WalledCities", "Gnarl",
+				"Square", "Dots", "Experimental" };
 		String choice = (String) JOptionPane.showInputDialog(null, "Choose the Rules",
 		        "Rules of GameOfLife", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if((choice != null)&&(choice.length()>0)){
@@ -103,8 +102,8 @@ public class GameView {
 	}
 	
 	
-	private JPanel createButtonsMenu(JFrame window) {
-		JButton startButton = new JButton("Start");
+	private javax.swing.JPanel createButtonsMenu(javax.swing.JFrame window) {
+		javax.swing.JButton startButton = new javax.swing.JButton("Start");
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent a) {
@@ -120,7 +119,7 @@ public class GameView {
 			}
 		});
 		
-		JButton undoButton = new JButton("Undo");
+		javax.swing.JButton undoButton = new javax.swing.JButton("Undo");
 		undoButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent a){
@@ -128,7 +127,7 @@ public class GameView {
 			}
 		});
 		
-		JButton haltButton = new JButton("Halt");
+		javax.swing.JButton haltButton = new javax.swing.JButton("Halt");
 		haltButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent a) {
@@ -136,9 +135,9 @@ public class GameView {
 			}
 		});
 	
-		JPanel controls = new JPanel();
+		javax.swing.JPanel controls = new javax.swing.JPanel();
 		controls.setBackground(Color.black);
-		controls.setPreferredSize(new Dimension(window.getSize().width, 50));
+		controls.setPreferredSize(new Dimension(600, 50));
 		controls.add(startButton);
 		controls.add(undoButton);
 		controls.add(haltButton);

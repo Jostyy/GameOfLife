@@ -220,9 +220,9 @@ public abstract class GameEngine {
 		int alive = 0;
 		for (int a = i - 1; a <= i + 1; a++) {
 			for (int b = j - 1; b <= j + 1; b++) {
-				List<Integer> convertedToInfiniteWorld = convertToInfiniteWorld(a, b);
-				int a1 = convertedToInfiniteWorld.get(0);
-				int b1 = convertedToInfiniteWorld.get(1);
+				List<Integer> infiniteWorld = infiniteWorld(a, b);
+				int a1 = infiniteWorld.get(0);
+				int b1 = infiniteWorld.get(1);
 				
 				if (validPosition(a1, b1)  && (!(a1==i && b1 == j)) && getListCellsItem(a1, b1).isAlive()) {
 					alive++;
@@ -232,7 +232,7 @@ public abstract class GameEngine {
 		return alive;
 	}
 	
-	private List<Integer> convertToInfiniteWorld(int i, int j) {
+	private List<Integer> infiniteWorld(int i, int j) {
 	
 		if(i == -1) {
 			i = width - 1;

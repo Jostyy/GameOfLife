@@ -1,9 +1,12 @@
 import Controller.GameController;
 import Model.RuleConway;
 import Model.RuleDayNight;
+import Model.RuleDots;
+import Model.RuleExperimental;
 import Model.RuleGnarl;
 import Model.GameEngine;
 import Model.RuleMaze;
+import Model.RuleSquare;
 import Model.RuleWalledCities;
 import View.GameView;
 import View.Statistics;
@@ -35,6 +38,15 @@ public class Main {
 			break;
 		case 5 :
 			engine = new RuleGnarl(HEIGHT, WIDTH, statistics, board.getCells());
+			break;
+		case 6 : 
+			engine = new RuleSquare(HEIGHT, WIDTH, statistics, board.getCells());
+			break;
+		case 7 :
+			engine = new RuleDots(HEIGHT, WIDTH, statistics, board.getCells());
+			break;
+		case 8 : 
+			engine = new RuleExperimental(HEIGHT, WIDTH, statistics, board.getCells());
 			break;
 		}	
 		controller.setBoard(board);
