@@ -47,7 +47,6 @@ public class GameController {
 	}
 	
 	public void start() {
-		if(TaskActive == false){
 			TaskActive = true;
 			task = new Timer();
 			task.scheduleAtFixedRate(new TimerTask() {
@@ -60,12 +59,25 @@ public class GameController {
 			    	}
 			    }
 			}, 0, 100);
-		}
 	}
-	public void halt() {
+	
+	public void stop(){
 		task.cancel();
+		task.purge();
+	}
+	
+	public void undo(){
+		engine.undo();
+		board.update();
+	}
+	
+	public void halt() {
+		if(TaskActive==true){
+			task.cancel();
+		}
 		engine.halt();
 	}
+	
 	
 	public void clickedCell(int i, int j) {
 		engine.clickedCell(i, j);

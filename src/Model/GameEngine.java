@@ -1,18 +1,9 @@
 package Model;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.awt.Image;
 import java.security.InvalidParameterException;
-import java.awt.Graphics;
-import javax.swing.SwingUtilities;
 
-
-import Controller.GameController;
-import View.GameView;
 import View.Statistics;
 
 /**
@@ -32,8 +23,7 @@ public abstract class GameEngine {
 	private int width;
 	private List<Cell> listCells;
 	private Statistics statistics;
-	private GameView board;
-	private Timer task;
+	private Memento memento;
 
 	/**
 	 * Construtor da classe Environment.
@@ -48,6 +38,7 @@ public abstract class GameEngine {
 		this.width = width;
 		this.listCells = listCells;
 		this.statistics = statistics;
+		memento = new Memento();
 	}
 	
 	/**
@@ -87,7 +78,7 @@ public abstract class GameEngine {
 			statistics.recordKill();
 		}
 		
-	
+		memento.storeCells(listCells);
 		
 	}
 	
@@ -152,6 +143,9 @@ public abstract class GameEngine {
 		return a >= 0 && a < height && b >= 0 && b < width;
 	}
 	
+	public void undo(){
+		listCells = memento.restoreCells();
+	}
 
 	public void halt() {
 		statistics.display();

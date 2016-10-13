@@ -117,21 +117,18 @@ public class GridView extends JPanel{
 
         int width = getWidth();
         int height = getHeight();
-
-        int cellWidth = width / columnCount;
-        int cellHeight = height / rowCount;
-
-        int xOffset = (width - (columnCount * cellWidth)) / 2;
-        int yOffset = (height - (rowCount * cellHeight)) / 2;
+        int cellDim = width / columnCount;
+        int x = (width - (columnCount * cellDim)) / 2;
+        int y = (height - (rowCount * cellDim)) / 2;
 
         if (cells.isEmpty()) {
-            for (int row = 0; row < rowCount; row++) {
-                for (int col = 0; col < columnCount; col++) {
+            for (int i = 0; i < rowCount; i++) {
+                for (int j = 0; j < columnCount; j++) {
                     Cell cell = new Cell(
-                            xOffset + (col * cellWidth),
-                            yOffset + (row * cellHeight),
-                            cellWidth,
-                            cellHeight);
+                            x + (j * cellDim),
+                            y + (i * cellDim),
+                            cellDim,
+                            cellDim);
                     cells.add(cell);
                 }
             }
@@ -146,7 +143,7 @@ public class GridView extends JPanel{
         }
         
 
-        g2d.setColor(Color.black);
+        g2d.setColor(Color.red);
         for (Rectangle cell : cells) {
             g2d.draw(cell);
         }
@@ -157,6 +154,9 @@ public class GridView extends JPanel{
     public List<Cell> getCells() {
     	return cells;
     }
-
+    public void setCells(List<Cell> cells){
+    	this.cells = cells;
+    }
+ 
 
 }

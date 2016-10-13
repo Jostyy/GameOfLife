@@ -1,9 +1,10 @@
 import Controller.GameController;
-import Model.Conway;
-import Model.DayNight;
+import Model.RuleConway;
+import Model.RuleDayNight;
+import Model.RuleGnarl;
 import Model.GameEngine;
-import Model.Maze;
-import Model.WalledCities;
+import Model.RuleMaze;
+import Model.RuleWalledCities;
 import View.GameView;
 import View.Statistics;
 
@@ -21,14 +22,20 @@ public class Main {
 		Statistics statistics = new Statistics();
 		switch(controller.getRule()){
 		case 1 :
-			engine = new Conway(HEIGHT, WIDTH, statistics, board.getCells());	
+			engine = new RuleConway(HEIGHT, WIDTH, statistics, board.getCells());	
 			break;
 		case 2 :
-			engine = new Maze(HEIGHT, WIDTH, statistics, board.getCells());	
+			engine = new RuleMaze(HEIGHT, WIDTH, statistics, board.getCells());
+			break;
 		case 3 :
-			engine = new DayNight(HEIGHT, WIDTH, statistics, board.getCells());
+			engine = new RuleDayNight(HEIGHT, WIDTH, statistics, board.getCells());
+			break;
 		case 4 : 
-			engine = new WalledCities(HEIGHT, WIDTH, statistics, board.getCells());
+			engine = new RuleWalledCities(HEIGHT, WIDTH, statistics, board.getCells());
+			break;
+		case 5 :
+			engine = new RuleGnarl(HEIGHT, WIDTH, statistics, board.getCells());
+			break;
 		}	
 		controller.setBoard(board);
 		controller.setEngine(engine);

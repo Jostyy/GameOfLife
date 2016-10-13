@@ -3,6 +3,7 @@ package View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +33,7 @@ public class GameView {
 	private JPanel controls;
 	private GridView grid;
 	private List<Cell> cells;
+	private boolean start;
 	
 	/**
 	 * Construtor da classe GameBoard
@@ -42,40 +44,48 @@ public class GameView {
 		this.controller = controller;
 		cells = new ArrayList<Cell>();
 		controller.setRule(dropDownList());
-		initGUI();
+		GraphicUserInterface();
 	}
 	
 	public List<Cell> getCells() {
 		return cells;
 	}
 	
+	public void setCells(List<Cell> cells) {
+		this.cells = cells;
+	}
+	
 	public void update() {
 		grid.repaint();
 	}
 	
-	private void setCells(List<Cell> cells) {
-		this.cells = cells;
-	}
 
-	public void initGUI() {
+	public void GraphicUserInterface() {
 
-		JFrame window = new JFrame("Game of Life");
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setBackground(Color.black);
-		window.setSize(500, 500);
-		window.setVisible(true);
-		window.setLocationRelativeTo(null);
-		this.controls = createButtonsMenu(window);
-		this.grid = createGrid(window, controls);
-		window.add(controls,  BorderLayout.SOUTH);
-		window.add(grid,  BorderLayout.NORTH);
-		window.pack();
+		JFrame jframe = new JFrame("Game of Life");
+		jframe.setBackground(Color.black);
+		jframe.setSize(600, 600);
+		jframe.setResizable(false);
+		jframe.setVisible(true);
+		jframe.setLocationRelativeTo(null);
+		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.controls = createButtonsMenu(jframe);
+		//this.grid = createGrid(jframe, controls);
+		grid = new GridView(height, width, controller);
+		grid.setPreferredSize(new Dimension(jframe.getSize().width, 
+								jframe.getSize().height - 50));
+		grid.setLayout(new GridLayout(height, width));
+		setCells(grid.getCells());
+		jframe.add(controls,  BorderLayout.SOUTH);
+		jframe.add(grid,  BorderLayout.NORTH);
+		jframe.pack();
+		System.out.println(jframe.getSize().height);
 
 	}
 	
 	public int dropDownList(){
 		int rule = 0;
-		String[] choices = { "", "Conway", "Maze", "DayNight", "WalledCities" };
+		String[] choices = { "", "Conway", "Maze", "DayNight", "WalledCities", "Gnarl" };
 		String choice = (String) JOptionPane.showInputDialog(null, "Choose the Rules",
 		        "Rules of GameOfLife", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if((choice != null)&&(choice.length()>0)){
@@ -98,16 +108,23 @@ public class GameView {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent a) {
-				controller.start();
-
+				start= !start;
+				if(start){
+					startButton.setText("Pause");
+					controller.start();
+				}
+				else{
+					startButton.setText("Start");
+					controller.stop();
+				}
 			}
 		});
 		
-		JButton nextGeneration = new JButton("Next");
-		nextGeneration.addActionListener(new ActionListener() {
+		JButton undoButton = new JButton("Undo");
+		undoButton.addActionListener(new ActionListener(){
 			@Override
-			public void actionPerformed(ActionEvent a) {
-				controller.nextGeneration();
+			public void actionPerformed(ActionEvent a){
+				controller.undo();
 			}
 		});
 		
@@ -118,27 +135,17 @@ public class GameView {
 				controller.halt();
 			}
 		});
-		
+	
 		JPanel controls = new JPanel();
 		controls.setBackground(Color.black);
 		controls.setPreferredSize(new Dimension(window.getSize().width, 50));
 		controls.add(startButton);
-		controls.add(nextGeneration);
+		controls.add(undoButton);
 		controls.add(haltButton);
 		
 		return controls;
 	}
 	
-	private GridView createGrid(JFrame window, JPanel controls) {
-		
-		GridView grid = new GridView(height, width, controller);
-		grid.setPreferredSize(new Dimension(window.getSize().width, 
-											window.getSize().height - 40));
-		grid.setLayout(new GridLayout(height, width));
-		setCells(grid.getCells());
-		return grid;
-		
-	}
 
 }
 
